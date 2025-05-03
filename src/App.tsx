@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Power, Thermometer, Droplets, Users, Wind, Fan, Gauge, Cpu, Sun, FileText, LogOut } from 'lucide-react';
+import { Thermometer, Droplets, Users, Wind, Fan, Gauge, Cpu, Sun, FileText, LogOut } from 'lucide-react';
 
 interface EnergyData {
   time: string;
@@ -42,7 +42,7 @@ function App() {
       const interval = setInterval(() => {
         const now = new Date();
         const timeStr = now.toLocaleTimeString();
-  
+
         // Energy Savings: small fluctuation around a realistic average
         setEnergyData(prev => {
           const last = prev[prev.length - 1]?.savings || 25;
@@ -50,31 +50,31 @@ function App() {
           const newData = [...prev, { time: timeStr, savings: next }];
           return newData.slice(-20);
         });
-  
+
         // Humidity: between 35% and 65%, slow variation
         setHumidity(prev => {
           const next = prev + (Math.random() - 0.5) * 0.8;
           return Math.max(35, Math.min(65, next));
         });
-  
+
         // Occupancy: integer steps between 0 and 10
         setOccupancy(prev => {
           const change = Math.random() < 0.1 ? (Math.random() < 0.5 ? 1 : -1) : 0;
           return Math.max(0, Math.min(10, prev + change));
         });
-  
+
         // Ventilation Score: smooth between 70 and 95
         setVentilationScore(prev => {
           const next = prev + (Math.random() - 0.5) * 1.5;
           return Math.max(70, Math.min(95, next));
         });
-  
+
         // Ambient Temp: smooth changes between 20°C and 28°C
         setAmbientTemp(prev => {
           const next = prev + (Math.random() - 0.5) * 0.4;
           return Math.max(20, Math.min(28, next));
         });
-  
+
         // System Reports
         if (Math.random() > 0.85) {
           setReports(prev => [
@@ -82,9 +82,9 @@ function App() {
             ...prev.slice(0, 4)
           ]);
         }
-  
+
       }, 3000); // Slow down interval slightly for realism
-  
+
       return () => clearInterval(interval);
     }
   }, [isAIEnabled, user]);
@@ -199,39 +199,41 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80')"
         }}
       />
-      <div className="relative max-w-7xl mx-auto px-4 py-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center space-x-3">
+          <div className="flex flex-wrap items-center space-x-3">
             <Cpu className="w-10 h-10 text-blue-500" />
             <h1 className="text-3xl font-bold text-white">AIVAC</h1>
           </div>
-          <div className="flex items-center space-x-4">
-            <span className="text-green-300">Welcome {user.email}</span>
-            <button
-              onClick={handleLogout}
-              className="flex items-center space-x-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700"
-            >
-              <LogOut className="w-4 h-4 text-gray-300" />
-              <span className="text-gray-300">Logout</span>
-            </button>
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
+            <div className="text-green-300 text-center sm:text-left">Welcome {user.email}</div>
+
+            <div className="flex justify-center sm:justify-start">
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700"
+              >
+                <LogOut className="w-4 h-4 text-gray-300" />
+                <span className="text-gray-300">Logout</span>
+              </button>
+            </div>
+
+            <div className="flex items-center justify-center sm:justify-start space-x-2">
               <span className="text-gray-300">AI Optimization</span>
               <button
                 onClick={() => setIsAIEnabled(!isAIEnabled)}
-                className={`relative inline-flex h-10 w-20 items-center rounded-full transition-colors duration-300 ${
-                  isAIEnabled ? 'bg-blue-500' : 'bg-gray-700'
-                }`}
+                className={`relative inline-flex h-10 w-20 items-center rounded-full transition-colors duration-300 ${isAIEnabled ? 'bg-blue-500' : 'bg-gray-700'
+                  }`}
               >
                 <span
-                  className={`inline-block h-8 w-8 transform rounded-full bg-white transition-transform duration-300 ${
-                    isAIEnabled ? 'translate-x-11' : 'translate-x-1'
-                  }`}
+                  className={`inline-block h-8 w-8 transform rounded-full bg-white transition-transform duration-300 ${isAIEnabled ? 'translate-x-11' : 'translate-x-1'
+                    }`}
                 />
               </button>
             </div>
@@ -250,8 +252,8 @@ function App() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis dataKey="time" stroke="#9CA3AF" />
                   <YAxis stroke="#9CA3AF" />
-                  <Tooltip 
-                    contentStyle={{ 
+                  <Tooltip
+                    contentStyle={{
                       backgroundColor: '#1F2937',
                       border: '1px solid #374151',
                       color: '#fff'
